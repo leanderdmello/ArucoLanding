@@ -37,7 +37,7 @@ void LandingController::send_next_waypoint() {
         return;
     }
 
-    geometry_msgs::msg::PoseWithCovarianceStamped current_pose_cov = drone_interface_->get_current_pose();
+    geometry_msgs::msg::PoseWithCovarianceStamped current_pose_cov = drone_interface_->get_global_pose();
     geometry_msgs::msg::Pose current_pose = current_pose_cov.pose.pose;
     const auto &target_pose = waypoints_[current_wp_index_];
 
@@ -57,7 +57,6 @@ void LandingController::send_next_waypoint() {
         align_wp.pose.pose.position.y = 0.0;
         align_wp.pose.pose.position.z = current_pose.position.z;
 
-        // Insert realignment waypoint just before current target
         waypoints_.insert(waypoints_.begin() + current_wp_index_, align_wp);
         return;
     }
@@ -79,4 +78,4 @@ void LandingController::send_next_waypoint() {
     drone_interface_->update_waypoint(limited_pose);
 }
 
-}  
+} 
