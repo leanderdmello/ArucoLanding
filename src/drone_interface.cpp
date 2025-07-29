@@ -40,10 +40,9 @@ void DroneInterface::set_manual_mode() {
 void DroneInterface::update_waypoint(const geometry_msgs::msg::PoseWithCovarianceStamped &pose_msg) {
     creos_sdk_msgs::msg::StateReference ref_msg;
     ref_msg.header.stamp = node_->now();
-    ref_msg.child_frame_id = "base_link";
-    ref_msg.pose = pose_msg;
-    ref_msg.source = creos_sdk_msgs::msg::StateReference::SOURCE_VERTEX;
-
+    ref_msg.pose = pose_msg.pose.pose;
+    ref_msg.translation_mode = creos_sdk_msgs::msg::StateReference::TRANSLATION_MODE_POSITION;
+    ref_msg.orientation_mode = creos_sdk_msgs::msg::StateReference::ORIENTATION_MODE_ATTITUDE;
     state_ref_pub_->publish(ref_msg);
 }
 
