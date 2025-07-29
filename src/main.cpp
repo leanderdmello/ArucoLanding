@@ -14,7 +14,6 @@
 #include "aruco_pose_estimator.hpp"
 #include "drone_interface.hpp"
 #include "landing_controller.hpp"
-#include "landing_planner.hpp"
 
 using namespace std::chrono_literals;
 
@@ -64,16 +63,15 @@ int main(int argc, char **argv) {
         if (pose_estimator->is_pose_ready()) {
             auto averaged_pose = pose_estimator->get_latest_pose();
             if (averaged_pose) {
-                geometry_msgs::msg::PoseWithCovarianceStamped current_pose;
-                current_pose.header.stamp = node->now();
-                current_pose.header.frame_id = "world";
-                current_pose.pose.pose.position.x = averaged_pose->translation().x();
-                current_pose.pose.pose.position.y = averaged_pose->translation().y();
-                current_pose.pose.pose.position.z = averaged_pose->translation().z();
-                current_pose.pose.pose.orientation.w = 1.0;  // Flat orientation (heading 0)
+                geometry_msgs::msg::PoseWithCovarianceStamped target_pose;
+                target_pose.header.stamp = node->now();
+                target_pose.header.frame_id = "world";
+                target_pose.pose.pose.position.x = 0.0;
+                target_pose.pose.pose.position.y = 0.0;
+                target_pose.pose.pose.position.z = averaged_pose->translation().z();
+                target_pose.pose.pose.orientation.w = 1.0;  // Flat orientation (yaw = 0)
 
-                auto waypoints = aruco_landing::generate_landing_path(current_pose);
-                landing_controller->set_waypoints(waypoints);
+                landing_controller->set_waypoints({target_pose});
                 drone_interface->set_autonomous_mode();
             }
         }
