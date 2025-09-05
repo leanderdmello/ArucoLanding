@@ -5,11 +5,9 @@ src/landing_planner.*: generates full landing path with waypoints
 
 src/landing_controller.*: decides next waypoint
 
-src/drone_interface.*: interface to the flight controller based on circle_example
-
 src/main.cpp: node setup 
 
-The system is composed of four main components:
+The system is composed of three main components:
 
 ArucoPoseEstimator
 Detects ArUco markers from the onboard camera feed using OpenCV. It uses multiple marker IDs (24 for the inner marker and 122 for the outer one), prioritising the smaller, central marker for better accuracy at close range. Pose estimates are calculated relative to the marker’s centre and averaged over a 3 seconds to reduce noise and improve stability.
