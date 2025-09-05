@@ -19,6 +19,3 @@ Uses the current pose to generate a sequence of waypoints that guide the drone t
 
 LandingController
 Manages the descent stages and enforces speed limits and positional tolerances. It ensures that the drone only descends further when it is properly aligned above the marker, preventing drifting during landing.
-
-DroneInterface
-Handles the communication between the ROS node and the drone’s flight controller. It publishes generated waypoints and listens for manual override inputs, allowing the operator to take control at any point during the landing sequence.
