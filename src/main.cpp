@@ -36,9 +36,9 @@ int main(int argc, char **argv)
 
     auto sdq = rclcpp::SensorDataQoS();
 
-    auto odom_sub =
-        node->create_subscription<nav_msgs::msg::Odometry>(
-            "/robot/odom", sdq, drone_state->GetOdometryCallback());
+    auto global_pose_sub =
+        node->create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
+            "/robot/pose", sdq, drone_state->GetGlobalPoseCallback());
     auto state_sub =
         node->create_subscription<creos_sdk_msgs::msg::State>(
             "/robot/state", sdq, drone_state->GetStateCallback());
@@ -103,7 +103,7 @@ int main(int argc, char **argv)
     controller_sub.reset();
     control_source_sub.reset();
     state_sub.reset();
-    odom_sub.reset();
+    global_pose_sub.reset();
   }
   rclcpp::shutdown();
   return 0;
